@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#102b46">
+  <meta name="description" content="Plataforma centralizada de atención y seguimiento de quejas de FastDelivery.">
+  <title>FastDelivery | Centro de atención</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <main id="loginPage" class="login-shell">
+    <section class="login-visual">
+      <div class="brand brand-light"><span class="brand-mark">F</span><span>FastDelivery</span></div>
+      <div class="login-message">
+        <span class="eyebrow">CENTRO DE ATENCIÓN</span>
+        <h1>Una mejor experiencia empieza por escuchar.</h1>
+        <p>Centraliza las reclamaciones, coordina a tus equipos y da seguimiento a cada cliente hasta resolver su caso.</p>
+      </div>
+      <div class="login-visual-foot">Servicio · Confianza · Seguimiento</div>
+    </section>
+    <section class="login-panel">
+      <form id="loginForm" class="login-card">
+        <div class="brand brand-dark"><span class="brand-mark">F</span><span>FastDelivery</span></div>
+        <span class="eyebrow">PLATAFORMA INTERNA</span>
+        <h2>Bienvenido</h2>
+        <p class="muted">Inicia sesión para administrar las quejas de los clientes.</p>
+        <label>Usuario<input name="username" autocomplete="username" required placeholder="Usuario administrador"></label>
+        <label>Contraseña<input name="password" type="password" autocomplete="current-password" required placeholder="Ingresa tu contraseña"></label>
+        <p id="loginError" class="form-error" aria-live="polite"></p>
+        <button class="button button-primary button-wide" type="submit">Iniciar sesión <span aria-hidden="true">→</span></button>
+        <p class="login-note">Acceso exclusivo para personal autorizado.</p>
+      </form>
+    </section>
+  </main>
+
+  <div id="appPage" class="app-shell hidden">
+    <aside class="sidebar">
+      <div class="brand brand-light"><span class="brand-mark">F</span><span>FastDelivery</span></div>
+      <div class="side-caption">GESTIÓN DE SERVICIO</div>
+      <button class="nav-item active" id="navDashboard"><span class="nav-icon">▦</span> Panel de control</button>
+      <button class="nav-item" id="navComplaints"><span class="nav-icon">☷</span> Reclamaciones</button>
+      <div class="sidebar-bottom">
+        <div class="sidebar-help"><span class="help-dot"></span><div><b>Centro de atención</b><small>Seguimiento de clientes</small></div></div>
+        <button id="logoutBtn" class="logout-button">↪ Cerrar sesión</button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div><span class="eyebrow">FASTDELIVERY / SERVICIO Y POSTVENTA</span><h1 id="pageTitle">Panel de control</h1></div>
+        <div class="user-pill"><span class="avatar">AD</span><span><b id="userName">Administrador</b><small>Personal autorizado</small></span></div>
+      </header>
+
+      <section class="welcome-row">
+        <div><h2>Resumen de atención</h2><p class="muted">Consulta el estado de las reclamaciones y mantén cada caso en seguimiento.</p></div>
+        <div class="welcome-actions"><button id="exportBtn" class="button button-secondary">↓ Exportar CSV</button><button id="newComplaintBtn" class="button button-primary">＋ Nueva queja</button></div>
+      </section>
+
+      <section class="stats-grid" aria-label="Indicadores de reclamaciones">
+        <article class="stat-card"><div class="stat-top"><span>Total de quejas</span><span class="stat-icon blue">▤</span></div><strong id="statTotal">0</strong><small>Reclamaciones registradas</small></article>
+        <article class="stat-card"><div class="stat-top"><span>Pendientes</span><span class="stat-icon amber">◷</span></div><strong id="statPending">0</strong><small>Requieren atención</small></article>
+        <article class="stat-card"><div class="stat-top"><span>En análisis</span><span class="stat-icon violet">⌕</span></div><strong id="statAnalysis">0</strong><small>En investigación interna</small></article>
+        <article class="stat-card"><div class="stat-top"><span>Resueltas</span><span class="stat-icon green">✓</span></div><strong id="statResolved">0</strong><small>Solución implementada</small></article>
+      </section>
+
+      <section class="table-card" id="complaintsSection">
+        <div class="table-heading"><div><h2>Reclamaciones recientes</h2><p class="muted">Cada queja cuenta con un folio único para facilitar su consulta.</p></div><span class="live-indicator"><i></i> Datos actualizados</span></div>
+        <div class="filters-row">
+          <label class="search-box"><span>⌕</span><input id="searchInput" type="search" placeholder="Buscar folio, cliente o guía..."></label>
+          <select id="statusFilter" aria-label="Filtrar por estado"><option value="">Todos los estados</option><option>Recibida</option><option>En análisis</option><option>En espera del cliente</option><option>Solución propuesta</option><option>Resuelta</option><option>Cerrada</option></select>
+          <select id="categoryFilter" aria-label="Filtrar por motivo"><option value="">Todos los motivos</option><option>Retraso en la entrega</option><option>Paquete dañado</option><option>Información incorrecta de rastreo</option><option>Otro</option></select>
+        </div>
+        <div class="table-wrap">
+          <table><thead><tr><th>FOLIO</th><th>CLIENTE</th><th>MOTIVO</th><th>FECHA</th><th>ÁREA</th><th>ESTADO</th><th></th></tr></thead><tbody id="complaintsBody"><tr><td colspan="7" class="empty-cell">Cargando reclamaciones...</td></tr></tbody></table>
+        </div>
+        <div class="table-footer"><span id="resultsCount">0 reclamaciones</span><span>Selecciona un registro para ver su historial.</span></div>
+      </section>
+      <footer class="app-footer">FastDelivery · Plataforma de atención a quejas <span>Información de uso interno</span></footer>
+    </main>
+  </div>
+
+  <div id="complaintModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="newModalTitle">
+    <div class="modal-backdrop" data-close="complaintModal"></div>
+    <section class="modal-card modal-large">
+      <div class="modal-header"><div><span class="eyebrow">REGISTRO DE SERVICIO</span><h2 id="newModalTitle">Registrar nueva queja</h2><p class="muted">Completa la información para generar un folio de seguimiento.</p></div><button class="icon-button" data-close="complaintModal" aria-label="Cerrar">×</button></div>
+      <form id="complaintForm">
+        <div class="form-grid">
+          <label>Nombre del cliente *<input name="customerName" required maxlength="120" placeholder="Nombre completo"></label>
+          <label>Número de guía *<input name="guideNumber" required maxlength="80" placeholder="Ej. FD-00012345"></label>
+          <label>Teléfono<input name="phone" maxlength="40" placeholder="Teléfono de contacto"></label>
+          <label>Correo electrónico<input name="email" type="email" maxlength="160" placeholder="cliente@correo.com"></label>
+          <label>Motivo de la queja *<select name="category" required><option value="">Selecciona un motivo</option><option>Retraso en la entrega</option><option>Paquete dañado</option><option>Información incorrecta de rastreo</option><option>Otro</option></select></label>
+          <label>Canal de recepción *<select name="channel" required><option value="">Selecciona un canal</option><option>Teléfono</option><option>Correo electrónico</option><option>Otro</option></select></label>
+          <label>Área responsable inicial<select name="assignedArea"><option>Atención al Cliente</option><option>Logística</option><option>Distribución</option><option>Almacén</option><option>Sistemas</option><option>Finanzas</option><option>Supervisión</option></select></label>
+          <label class="full-span">Descripción del problema *<textarea name="description" required maxlength="3000" rows="4" placeholder="Describe qué ocurrió, cuándo sucedió y qué necesita el cliente..."></textarea></label>
+        </div>
+        <div class="modal-actions"><button type="button" class="button button-secondary" data-close="complaintModal">Cancelar</button><button class="button button-primary" type="submit">Registrar queja y generar folio</button></div>
+      </form>
+    </section>
+  </div>
+
+  <div id="detailModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+    <div class="modal-backdrop" data-close="detailModal"></div>
+    <section class="modal-card modal-large">
+      <div class="modal-header"><div><span class="eyebrow">EXPEDIENTE DE ATENCIÓN</span><h2 id="detailTitle">Detalle de reclamación</h2><p id="detailSubtitle" class="muted"></p></div><button class="icon-button" data-close="detailModal" aria-label="Cerrar">×</button></div>
+      <div id="detailContent" class="detail-content"><p class="muted">Cargando expediente...</p></div>
+      <form id="updateForm" class="update-form hidden">
+        <h3>Actualizar seguimiento</h3>
+        <div class="form-grid">
+          <label>Estado<select name="status"><option>Recibida</option><option>En análisis</option><option>En espera del cliente</option><option>Solución propuesta</option><option>Resuelta</option><option>Cerrada</option></select></label>
+          <label>Área responsable<select name="assignedArea"><option>Atención al Cliente</option><option>Logística</option><option>Distribución</option><option>Almacén</option><option>Sistemas</option><option>Finanzas</option><option>Supervisión</option></select></label>
+          <label class="full-span">Solución propuesta o aplicada<textarea name="solution" rows="3" maxlength="3000" placeholder="Ej. Se autorizó reposición del paquete..."></textarea></label>
+          <label class="full-span">Nota de seguimiento<textarea name="note" rows="2" maxlength="2000" placeholder="Registra el contacto con el cliente, avances o acuerdos..."></textarea></label>
+        </div>
+        <div class="modal-actions"><button type="button" class="button button-secondary" data-close="detailModal">Cerrar</button><button type="submit" class="button button-primary">Guardar actualización</button></div>
+      </form>
+    </section>
+  </div>
+</body>
+</html>

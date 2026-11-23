@@ -1,0 +1,17 @@
+services:
+  fastdelivery:
+    build: .
+    container_name: fastdelivery-atencion
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000
+      DATA_DIR: /data
+      ADMIN_USER: ${ADMIN_USER}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+      SESSION_SECRET: ${SESSION_SECRET}
+    volumes:
+      - fastdelivery_data:/data
+volumes:
+  fastdelivery_data:

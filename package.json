@@ -1,0 +1,8 @@
+{
+  "name": "fastdelivery-centro-atencion",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Plataforma web centralizada para registrar, consultar y dar seguimiento a quejas de FastDelivery.",
+  "engines": { "node": ">=22.5.0" },
+  "scripts": { "start": "node --env-file-if-exists=.env server.js" }
+}
